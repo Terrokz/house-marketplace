@@ -14,8 +14,8 @@ import { toast } from 'react-toastify'
 import ListingItem from '../components/ListingItem'
 import Spinner from '../components/Spinner'
 
-function Offers() {
-  const [listings, setListings] = useState(null)
+function Category() {
+	const [listings, setListings] = useState(null)
 	const [loading, setLoading] = useState(true)
 	const [lastFetchedListing, setLastFetchedListing] = useState(null)
 
@@ -30,9 +30,9 @@ function Offers() {
 				//create query
 				const q = query(
 					listingsRef,
-					where('offer', '==', true),
+					where('type', '==', params.categoryName),
 					orderBy('timestamp', 'desc'),
-					limit(10)
+					limit(1)
 				)
 
 				//execute query
@@ -69,7 +69,7 @@ function Offers() {
 			//create query
 			const q = query(
 				listingsRef,
-				where('offer', '==', true),
+				where('type', '==', params.categoryName),
 				orderBy('timestamp', 'desc'),
 				startAfter(lastFetchedListing),
 				limit(10)
@@ -101,7 +101,9 @@ function Offers() {
 		<div className='category'>
 			<header>
 				<p className='pageHeader'>
-					Discounted Offers
+					{params.categoryName === 'rent'
+						? 'Places for rent'
+						: 'Places for sale'}
 				</p>
 			</header>
 
@@ -114,22 +116,23 @@ function Offers() {
 							{listings.map((listing) => (
 								<ListingItem
 									listing={listing.data}
-									id={listing.id}
+							      id={listing.id}
 									key={listing.id}
 								/>
 							))}
 						</ul>
 					</main>
+
 					<br /> 
 					{lastFetchedListing && (
 						<p className="loadMore" onClick={onFetchMoreListings}>Load more listings</p>
 					)}
 				</>
 			) : (
-				<p>No discounted offers right now</p>
+				<p>No listings for {params.categoryName}</p>
 			)}
 		</div>
 	)
 }
 
-export default Offers
+export default Category
