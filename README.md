@@ -9,5 +9,6 @@ Wykorzystane technologie:
   <li> CSS </li>
   <li> HTML </li>
   <li> Firebase </li>
+  </ul>
   
   Na podstawie kursu "React front to Back 2022" na platformie Udemy.
