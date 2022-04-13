@@ -17,15 +17,17 @@ function OAuth() {
 			const user = result.user
 
 			const docRef = doc(db, 'users', user.uid)
-			const docSnap = await getDoc(docRef)
 
-			if (!docSnap.exists()) {
+			try {
+				const docSnap = await getDoc(docRef)
+			} catch (err) {
 				await setDoc(doc(db, 'user', user.uid), {
 					name: user.displayName,
 					email: user.email,
 					timestamp: serverTimestamp(),
 				})
 			}
+
 			navigate('/')
 		} catch (error) {
 			toast.error('Could not authorize with Google')
